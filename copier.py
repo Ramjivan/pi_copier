@@ -9,7 +9,7 @@ import threading
 MAX_COPY_NUMBER = 20
 
 # sleep of 10 seconds @ startup to let all the drives get mounted
-time.sleep(10)
+time.sleep(15)
 
 # GPIO setup for led and btn
 BUTTON_PRESS_DURATION = 0.5
@@ -107,6 +107,19 @@ def get_drives_list():
     drives_list = [line.split() for line in drives_txt_file.readlines()]
     return drives_list
 
+DRIVE_DETECTION_INTERVAL = 5
+def chk_if_drives_are_attached():
+    drives_list = get_drives_list()
+    if not drives_list:
+        time.sleep(DRIVE_DETECTION_INTERVAL)
+        print('not attached')
+        chk_if_drives_are_attached()
+        
+    else:
+        print('attached')
+        return
+
+
 # CHECK FOR COPY STATE
 # CHK IF COPY DONE
 
@@ -184,6 +197,7 @@ def copy_operation():
 #----------- init ---------#
 # Program initialization
 def init():
+    chk_if_drives_are_attached()
     if(is_copy_done()):
         # fastblink led to denote files are already copied
         control_led('blink', 'fast')
@@ -203,7 +217,7 @@ def init():
 
 # ------- Initializing pr0gram ---------- #
 init()
-        
+
 
 
 
