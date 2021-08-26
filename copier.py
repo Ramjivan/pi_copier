@@ -107,14 +107,13 @@ def get_drives_list():
     drives_list = [line.split() for line in drives_txt_file.readlines()]
     return drives_list
 
-DRIVE_DETECTION_INTERVAL = 5
 def chk_if_drives_are_attached():
     drives_list = get_drives_list()
     if not drives_list:
-        time.sleep(DRIVE_DETECTION_INTERVAL)
+        control_led('blink', 'slow')
         print('not attached')
-        chk_if_drives_are_attached()
-        
+        wait_for_btn_press('chk if drives attached')
+        chk_if_drives_are_attached()        
     else:
         print('attached')
         return
