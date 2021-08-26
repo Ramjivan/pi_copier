@@ -29,7 +29,7 @@ i=0
 
 for d in ${usb[@]} 
 do
-bash cpo.sh $d &
+bash /home/pi/cpo.sh $d &
 pIdArray[i]=$!
 let i+=1
 done
